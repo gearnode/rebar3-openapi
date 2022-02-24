@@ -37,19 +37,36 @@ init(State) ->
 do(State) ->
   Config = rebar_state:get(State, openapi, []),
 
-  case maps:find(specification_file, Config) of
-    {ok, SpecificationFile} ->
-      OutputDir = maps:get(output_dir, Config, "src"),
-      Options = #{language => erlang, generator => client},
+  SpecificationFile =
+    case maps:find(specification_file, Config) of
+      {ok, Value} ->
+        Value;
+      error ->
+        rebar_utils:abort("openapi error: missing specification_file configuration key", [])
+    end,
 
-      case openapi:generate(SpecificationFile, OutputDir, Options) of
-        ok ->
-          {ok, State};
-        {error, Reason} ->
-          {error, Reason}
-      end;
-    error ->
-      rebar_utils:abort("openapi error: missing specification_file configuration key", [])
+  PackageName =
+    case maps:find(package_name, Config) of
+      {ok, V1} when is_list(V1) ->
+        iolist_to_binary(V1);
+      {ok, V2} when is_binary(V2) ->
+        V2;
+      {ok, _} ->
+        rebar_utils:abort("openapi error: invalid package_name configuration key", []);
+      _ ->
+        rebar_utils:abort("openapi error: missing package_name configuration key", [])
+    end,
+
+  OutputDir = maps:get(output_dir, Config, "src"),
+  Options = #{language => erlang,
+              generator => client,
+              package_name => PackageName},
+
+  case openapi:generate(SpecificationFile, OutputDir, Options) of
+    ok ->
+      {ok, State};
+    {error, Reason} ->
+      rebar_utils:abort("openapi error: ~p~n", [Reason])
   end.
 
 -spec format_error(any()) -> iolist().
