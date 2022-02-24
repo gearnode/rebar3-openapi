@@ -49,7 +49,7 @@ do(State) ->
           {error, Reason}
       end;
     error ->
-      {error, missing_specification_file}
+      rebar_utils:abort("openapi error: missing specification_file configuration key")
   end.
 
 -spec format_error(any()) -> iolist().
