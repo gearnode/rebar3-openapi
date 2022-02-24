@@ -36,8 +36,21 @@ init(State) ->
 -spec do(rebar_state:t()) -> {ok, rebar_state:t()} | {error, string()}.
 do(State) ->
   Config = rebar_state:get(State, openapi, []),
-  io:format("XXX ~p~n", [Config]),
-  {ok, State}.
+
+  case maps:find(specification_file, Config) of
+    {ok, SpecificationFile} ->
+      OutputDir = maps:get(output_dir, Config, "src"),
+      Options = #{language => erlang, generator => client},
+
+      case openapi:generate(SpecificationFile, OutputDir, Options) of
+        ok ->
+          {ok, State};
+        {error, Reason} ->
+          {error, Reason}
+      end;
+    error ->
+      {error, missing_specification_file}
+  end.
 
 -spec format_error(any()) -> iolist().
 format_error(Reason) ->
