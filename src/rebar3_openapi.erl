@@ -18,6 +18,7 @@
 
 -spec init(rebar_state:t()) -> {ok, rebar_state:t()}.
 init(State0) ->
+  application:ensure_all_started(openapi),
   {ok, State1} = rebar3_openapi_generate:init(State0),
   {ok, State1}.
 
