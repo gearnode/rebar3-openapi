@@ -18,7 +18,7 @@
   1},
  {<<"openapi">>,
   {git,"https://github.com/exograd/erl-openapi.git",
-       {ref,"a80c273da77923971d82c64142f51d7a39582618"}},
+       {ref,"fda4358d23076360bed939c626c96b774c159e72"}},
   0},
  {<<"rebar3_format">>,
   {git,"https://github.com/AdRoll/rebar3_format.git",
