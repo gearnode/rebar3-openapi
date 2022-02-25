@@ -22,5 +22,4 @@
     openapi]},
   {env, []},
   {modules, []},
-
   {licenses, ["ISC"]}]}.
