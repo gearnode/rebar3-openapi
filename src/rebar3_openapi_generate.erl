@@ -60,6 +60,7 @@ do(State) ->
   OutputDir = maps:get(output_dir, Config, "src"),
   Options = #{language => erlang,
               generator => client,
+              default_host => maps:get(default_host, Config, <<>>),
               package_name => PackageName},
 
   case openapi:generate(SpecificationFile, OutputDir, Options) of
