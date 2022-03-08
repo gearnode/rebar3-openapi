@@ -30,7 +30,7 @@
   2},
  {<<"openapi">>,
   {git,"https://github.com/exograd/erl-openapi.git",
-       {ref,"b774dfa55aa79086182c5130954760b9cef78b4c"}},
+       {ref,"3f12fb08dc3dd76c7d5f82213024f93853b9ee4b"}},
   0},
  {<<"rebar3_format">>,
   {git,"https://github.com/AdRoll/rebar3_format.git",
